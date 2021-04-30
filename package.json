@@ -1,0 +1,26 @@
+{
+  "name": "bushybot",
+  "version": "1.0.0",
+  "description": "Some random private discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AkashicBearer",
+  "license": "ISC",
+  "dependencies": {
+    "ascii-table": "0.0.9",
+    "chalk": "^4.1.0",
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "^0.12.3",
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.21",
+    "mathjs": "^9.3.0",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
+    "moment-timezone": "^0.5.33",
+    "ms": "^2.1.3",
+    "mysql2": "^2.2.5",
+    "node-fetch": "^2.6.1"
+  }
+}
