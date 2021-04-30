@@ -19,16 +19,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const { CommandoClient, CommandoClientOptions } = require('discord.js-commando');
 const exec = require('child_process').exec;
 
-const LevelSystem = require('./LevelSystem');
-const KeyUtils = require('./RandomKeyUtils')
-const Constants = require(`./Constants`)
+const Req = require('./Req.js');
 
 class CustomCommandoClient extends CommandoClient {
     constructor(options) {
         super(options || new CommandoClientOptions());
 
-        this.LevelSystem = new LevelSystem(this);
-        this.KeyUtils = new KeyUtils(this)
+        this.Req = Req
 
     }
 
