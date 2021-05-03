@@ -44,6 +44,7 @@ module.exports = class HelpCommand extends Command {
         let that = this
         let client = that.client
 
+		// Util COmmand Group
         let util = [];
 
         this.client.registry.commands.filter(c => c.groupID === "util").array().forEach(command => {
@@ -53,6 +54,13 @@ module.exports = class HelpCommand extends Command {
             util.push('`'+command.name+'`');
         });
         util.join(",  ");
+
+		// Roleplay Command Group
+		let rp = [];
+
+        this.client.registry.commands.filter(c => c.groupID === "roleplay").array().forEach(command => {
+            rp.push('`'+command.name+'`');
+        });
 
         const embed = new MessageEmbed()
 
@@ -98,7 +106,11 @@ module.exports = class HelpCommand extends Command {
                 embed.addField(`❯ Utilisation Commands`, util+" ")
 
             }
+			if(util.length > 0){
 
+                embed.addField(`❯ Roleplay Commands`, rp+" ")
+
+            }
         }
 
         embed.setThumbnail(client.user.avatarURL())

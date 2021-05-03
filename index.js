@@ -25,63 +25,72 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
 require('moment')
 require('moment-duration-format')
 
 // Random requirements for future ref#
-const LevelSystem = require("./modules/LevelSystem")
-const CustomCommandoClient = require("./modules/CustomCommando")
-const MySQLProvider = require('./modules/MySQLProvider');
-const RandomUtils = require("./modules/RandomKeyUtils")
+const Modules = require("./modules/Req.js")
+const CustomCommandoCl = require("./modules/CustomCommando.js")
+const MySQLProvider = require('./modules/MySQLProvider.js');
+
+// Env Variables
+const Discord_Token = process.env['DISCORD_TOKEN']
+const DBUser = process.env['db_user']
+const DBHost = process.env['db_host']
+const DBPass = process.env['db_password']
+const DBDatabase = process.env['db_database']
 
 
 // Bot Client
-const client = new CustomCommandoClient({
-    commandPrefix: 'b!',
-    owner: ["193021560792154112"],
-    disableEveryone: true,
-    invite: "https://discord.gg/Y3XXjGaaTE"
+const client = new CustomCommandoCl({
+	commandPrefix: 'b!',
+	owner: ["193021560792154112"],
+	disableEveryone: true,
+	invite: "https://discord.gg/Y3XXjGaaTE"
 });
 
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('ok');
+});
+server.listen(3000);
+
 client.registry
-    .registerDefaultTypes()
-    .registerGroups([
-        ['utilisation', 'Util'],
-        ["admin", "Administration"],
-        ['tech', "Technical"],
-        ["xp", "XP System"],
-        ["owner", "Owner"]
-    ])
-    .registerDefaultGroups()
-    .registerDefaultCommands({
-        help: false,
-        ping: false,
-        prefix: true,
-        eval: true,
-        unknownCommand: false
-    })
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+	.registerDefaultTypes()
+	.registerGroups([
+		['utilisation', 'Util'],
+		["roleplay", "Roleplay"]
+	])
+	.registerDefaultGroups()
+	.registerDefaultCommands({
+		help: false,
+		ping: false,
+		prefix: true,
+		eval: true,
+		unknownCommand: false
+	})
+	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 // Events
 client.once('ready', () => {
 
-    console.log(`\nLogged in as ${client.user.tag} (${client.user.id})`)
+	console.log(`\nLogged in as ${client.user.tag} (${client.user.id})`)
 
-    var status = [">help for more info", "v1.0.0", "Under Recode!", `on ${client.guilds.cache.size} Servers!`] // You can change it whatever you want.
+	var status = [">help for more info", "v1.0.0", "Under Recode!", `on ${client.guilds.cache.size} Servers!`] // You can change it whatever you want.
 
-    setInterval(function() {
+	setInterval(function() {
 
-        let randstat = status[Math.floor(Math.random() * status.length)]
+		let randstat = status[Math.floor(Math.random() * status.length)]
 
-        client.user.setPresence({
-            activity: {
-                name: `${randstat}`
-            },
-            status: "online"
-        })
+		client.user.setPresence({
+			activity: {
+				name: `${randstat}`
+			},
+			status: "online"
+		})
 
-    }, 20000);
+	}, 20000);
 })
 
 client.on('error', console.error);
@@ -89,24 +98,25 @@ client.on("debug", console.log)
 
 // CLient Login + Database Connection 
 MySQL
-    .createConnection({
-        host: process.env.db_host,
-        port: "3306",
-        user: process.env.db_user,
-        password: process.env.db_password,
-        database: process.env.db_database,
-    }).then((db) => {
+	.createConnection({
+		host: process.env.db_host,
+		port: "3306",
+		user: process.env.db_user,
+		password: process.env.db_password,
+		database: process.env.db_database,
+	}).then((db) => {
 
-        console.log('✅ Connected to database');
+		console.log('✅ Connected to database');
 
-        client.setProvider(new MySQLProvider(db))
+		client.setProvider(new MySQLProvider(db))
 
-        client.login(process.env.DISCORD_TOKEN);
+		client.login(Discord_Token);
 
-    })
-    .catch((err) => {
+	})
+	.catch((err) => {
 
-        console.log("Error in loading database: " + err)
+		console.log("Error in loading database: " + err)
 
-        client.login(process.env.DISCORD_TOKEN)
-    })
+		client.login(Discord_Token)
+
+	})

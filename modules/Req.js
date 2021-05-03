@@ -19,15 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 module.exports = {
 
 	//PlaceHolders
-	PlaceHolderUtils: require("./placeholders/PlaceHolderUtils.js"),
-	PlaceHolderRules: require("./placeholders/PlaceHolderRules.js"),
+	//PlaceHolderUtils: require("./placeholders/PlaceHolderUtils.js"),
+	//PlaceHolderRules: require("./placeholders/PlaceHolderRules.js"),
 
 	//Structures
 	BushyEmbed: require("./structures/BushyEmbed.js"),
 	PaginatedEmbed: require("./structures/PaginatedEmbed.js"),
 
 	//Randomness
-	Colors: require("./Color.js"),
+	Color: require("./Color.js"),
 	Constants: require("./Constants.js"),
 	DiscordUtils: require("./DiscordUtils.js"),
 	FileUtils: require("./FileUtils.js"),
