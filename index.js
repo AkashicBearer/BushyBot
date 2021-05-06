@@ -15,7 +15,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 const { FriendlyError, CommandoClient } = require("discord.js-commando");
 const { readFileSync } = require('fs')
 
@@ -28,6 +27,7 @@ dotenv.config();
 
 require('moment')
 require('moment-duration-format')
+
 
 // Random requirements for future ref#
 const Modules = require("./modules/Req.js")

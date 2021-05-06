@@ -15,10 +15,9 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 const { Command } = require('discord.js-commando');
-const { MessageEmbed } = require('discord.js');
-const chalk = require('chalk')
+const { createCanvas, loadImage, Canvas } = require('canvas');
+const { MessageEmbed, Discord, MessageAttachment } = require('discord.js');
 const Nodesu = require('nodesu');
 const APIKey = process.env['OSU_API_KEY']
 const osuProfile = new Nodesu.Client(APIKey)
@@ -43,7 +42,7 @@ module.exports = class ProfileCommand extends Command {
 
 		osuProfile.user
 			.get(args.id)
-			.then((osu) => {
+			.then(async(osu, err) => {
 				console.log(osu)
 				const OsuEmbed = new MessageEmbed()
 					OsuEmbed.setTitle(`${osu.username}'s Profile`)
@@ -66,6 +65,17 @@ module.exports = class ProfileCommand extends Command {
 					OsuEmbed.setThumbnail(osu.displayHtml)
 					OsuEmbed.setFooter(`Powered by nodesu`)
 				message.channel.send(OsuEmbed)
+/*
+				const canvas = createCanvas(2780, 1332)
+                const ctx = canvas.getContext('2d')
+				const background = await loadImage("./modules/assets/backgrounds/ranking-panel@2x.png");
+
+					ctx.globalAlpha = 0.75;
+                    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+                    ctx.globalAlpha = 1;
+				const attachment = new MessageAttachment(canvas.toBuffer(), 'profile.png');
+
+             message.channel.send(attachment) */
 
 			}).catch((err) => {
 
