@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 const { FriendlyError, CommandoClient } = require("discord.js-commando");
 const { readFileSync } = require('fs')
 
+const chalk = require("chalk");
 const MySQL = require('mysql2/promise');
 const MySQLi = require('mysql2')
 const path = require('path');
@@ -33,13 +34,19 @@ const Modules = require("./modules/Req.js")
 const CustomCommandoCl = require("./modules/CustomCommando.js")
 const MySQLProvider = require('./modules/MySQLProvider.js');
 
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('ok');
+});
+server.listen(3000);
+
 // Env Variables
 const Discord_Token = process.env['DISCORD_TOKEN']
 const DBUser = process.env['db_user']
 const DBHost = process.env['db_host']
 const DBPass = process.env['db_password']
 const DBDatabase = process.env['db_database']
-
 
 // Bot Client
 const client = new CustomCommandoCl({
@@ -49,18 +56,15 @@ const client = new CustomCommandoCl({
 	invite: "https://discord.gg/Y3XXjGaaTE"
 });
 
-const http = require('http');
-const server = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end('ok');
-});
-server.listen(3000);
+const logger = require('./modules/clientLogger.js')
+logger.all(client);
 
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
 		['utilisation', 'Util'],
-		["roleplay", "Roleplay"]
+		["roleplay", "Roleplay"],
+		["games", "Game Stats"]
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
@@ -72,30 +76,6 @@ client.registry
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
-// Events
-client.once('ready', () => {
-
-	console.log(`\nLogged in as ${client.user.tag} (${client.user.id})`)
-
-	var status = [">help for more info", "v1.0.0", "Under Recode!", `on ${client.guilds.cache.size} Servers!`] // You can change it whatever you want.
-
-	setInterval(function() {
-
-		let randstat = status[Math.floor(Math.random() * status.length)]
-
-		client.user.setPresence({
-			activity: {
-				name: `${randstat}`
-			},
-			status: "online"
-		})
-
-	}, 20000);
-})
-
-client.on('error', console.error);
-client.on("debug", console.log)
-
 // CLient Login + Database Connection 
 MySQL
 	.createConnection({
@@ -106,7 +86,7 @@ MySQL
 		database: process.env.db_database,
 	}).then((db) => {
 
-		console.log('✅ Connected to database');
+		console.log(chalk.green('✅ Connected to database'))
 
 		client.setProvider(new MySQLProvider(db))
 
@@ -115,7 +95,7 @@ MySQL
 	})
 	.catch((err) => {
 
-		console.log("Error in loading database: " + err)
+		console.log(chalk.red("Error in loading database: " + err))
 
 		client.login(Discord_Token)
 

@@ -62,6 +62,13 @@ module.exports = class HelpCommand extends Command {
             rp.push('`'+command.name+'`');
         });
 
+		// GameStats Command Group
+		let games = [];
+
+        this.client.registry.commands.filter(c => c.groupID === "games").array().forEach(command => {
+            games.push('`'+command.name+'`');
+        });
+
         const embed = new MessageEmbed()
 
         const nero = this.client.registry.commands
@@ -106,9 +113,14 @@ module.exports = class HelpCommand extends Command {
                 embed.addField(`❯ Utilisation Commands`, util+" ")
 
             }
-			if(util.length > 0){
+			if(rp.length > 0){
 
                 embed.addField(`❯ Roleplay Commands`, rp+" ")
+
+            }
+			if(games.length > 0){
+
+                embed.addField(`❯ Game Stats Commands`, games+" ")
 
             }
         }
